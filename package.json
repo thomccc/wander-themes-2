@@ -9,9 +9,21 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@central-icons-react/round-filled-radius-2-stroke-1.5": "^1.1.165",
+    "@central-icons-react/round-outlined-radius-2-stroke-1.5": "^1.1.165",
+    "@wandercom/design-system-fonts": "^0.1.149",
+    "@wandercom/design-system-shared": "^0.1.149",
+    "@wandercom/design-system-tokens": "^0.1.149",
+    "@wandercom/design-system-web": "^0.1.149",
     "next": "16.1.7",
     "react": "19.2.3",
     "react-dom": "19.2.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@central-icons-react/round-filled-radius-2-stroke-1.5",
+      "@central-icons-react/round-outlined-radius-2-stroke-1.5"
+    ]
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
