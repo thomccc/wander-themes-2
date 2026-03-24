@@ -451,7 +451,7 @@ export function resolveTokens(
   accent: string,
   brand: string,
 ): ResolvedTokens {
-  const isLight = hexToOklch(bg).L > 0.5;
+  const isLight = hexToOklch(bg).L > 0.55;
 
   // Surface mixing uses pure black/white for precise neutral steps
   // that align 1:1 with the DS neutral scale (Wander preset)
@@ -492,7 +492,7 @@ export function resolveTokens(
       Quaternary: mixColors(bg, surfaceFg, sp.q),
       Modal: isLight ? bg : mixColors(bg, surfaceFg, sp.s),
       Tooltip: mixColors(surfaceFg, bg, 5),
-      Input: isLight ? mixColors(bg, surfaceFg, sp.s) : alphaBlend(surfaceFg, bg, 0.1),
+      Input: isLight ? mixColors(bg, surfaceFg, sp.s) : 'oklch(0.87 0 0 / 0.1)',
       Toast: isLight ? bg : mixColors(bg, surfaceFg, sp.t),
       Dropdown: isLight ? bg : mixColors(bg, surfaceFg, sp.t),
       // Searchbar: base → selected → hover → trigger-selected
@@ -500,7 +500,7 @@ export function resolveTokens(
       Searchbar: isLight ? bg : mixColors(bg, surfaceFg, sp.t),
       'Searchbar-selected': isLight ? mixColors(bg, surfaceFg, sp.s) : mixColors(bg, surfaceFg, sp.t),
       'Searchbar-trigger-hover': isLight ? mixColors(bg, surfaceFg, sp.t) : mixColors(bg, surfaceFg, sp.q),
-      'Searchbar-trigger-selected': isLight ? mixColors(bg, surfaceFg, sp.q) : mixColors(bg, surfaceFg, 25),
+      'Searchbar-trigger-selected': isLight ? bg : mixColors(bg, surfaceFg, 22),
       'Toggle select': isLight ? bg : mixColors(bg, surfaceFg, sp.q),
       Card: bg,
       Slider: isLight ? bg : mixColors(bg, surfaceFg, sp.s),
@@ -556,14 +556,15 @@ export function resolveTokens(
       Destructive: autoTextColor(alphaBlend(STATUS_COLORS.error, bg, 0.16)),
     },
     border: {
-      // Borders use pure black/white at alpha — matches DS exactly
-      Primary: alphaBlend(surfaceFg, bg, 0.05),
-      Secondary: alphaBlend(surfaceFg, bg, 0.08),
-      Tertiary: alphaBlend(surfaceFg, bg, 0.18),
-      // Overlay borders are always white-based — gives components (dropdowns, popovers)
-      // definition on any background, especially darker modes
-      'Overlay-Primary': alphaBlend('#ffffff', bg, 0.1),
-      'Overlay-Secondary': alphaBlend('#ffffff', bg, 0.14),
+      // Borders use oklch alpha values matching DS exactly
+      // Light: black at alpha, Dark: white at alpha
+      Primary: isLight ? 'oklch(0 0 0 / 0.051)' : 'oklch(1 0 0 / 0.102)',
+      Secondary: isLight ? 'oklch(0 0 0 / 0.078)' : 'oklch(1 0 0 / 0.141)',
+      Tertiary: isLight ? 'oklch(0 0 0 / 0.18)' : 'oklch(1 0 0 / 0.2)',
+      // Overlay: transparent on light (no extra definition needed),
+      // same as primary/secondary on dark (components need visible borders)
+      'Overlay-Primary': isLight ? 'oklch(0 0 0 / 0)' : 'oklch(1 0 0 / 0.102)',
+      'Overlay-Secondary': isLight ? 'oklch(0 0 0 / 0)' : 'oklch(1 0 0 / 0.141)',
       Selected: fg,
       Blue: STATUS_COLORS.info,
     },

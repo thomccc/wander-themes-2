@@ -38,21 +38,25 @@ function HeroSearchBar({ tokens }: { tokens: ResolvedTokens }) {
   // Compute text colors that are readable against the searchbar surface
   // (not the section bg), since the searchbar has its own elevated surface
   const sbBg = tokens.surface.Searchbar;
-  const sbIsLight = hexToOklch(sbBg).L > 0.4;
-  const sbTextPrimary = sbIsLight ? '#202020' : '#fafafa';
-  const sbTextSecondary = sbIsLight ? '#8e8e8e' : '#8e8e8e';
+  const sbTriggerSelected = tokens.surface['Searchbar-trigger-selected'];
+  // Use the trigger-selected surface to determine text readability
+  // Lower threshold (0.55) so mid-tone colored surfaces get light text
+  const triggerSelectedIsLight = hexToOklch(sbTriggerSelected).L > 0.55;
+  const sbTextPrimary = triggerSelectedIsLight ? '#202020' : '#fafafa';
+  const sbIsLight = hexToOklch(sbBg).L > 0.55;
+  const sbTextSecondary = sbIsLight ? 'rgba(0,0,0,0.45)' : 'rgba(255,255,255,0.45)';
 
   const searchBarVars = {
     '--color-surface-searchbar': sbBg,
     '--color-surface-searchbar-selected': tokens.surface['Searchbar-selected'],
     '--color-surface-searchbar-trigger-hover': tokens.surface['Searchbar-trigger-hover'],
-    '--color-surface-searchbar-trigger-selected': tokens.surface['Searchbar-trigger-selected'],
+    '--color-surface-searchbar-trigger-selected': sbTriggerSelected,
     '--color-border-overlay-primary': tokens.border['Overlay-Primary'],
     '--color-border-overlay-secondary': tokens.border['Overlay-Secondary'],
-    '--color-text-primary': sbTextPrimary,
-    '--color-text-secondary': sbTextSecondary,
+    // DS uses --color-primary/--color-secondary for text-primary/text-secondary utilities
+    '--color-primary': sbTextPrimary,
+    '--color-secondary': sbTextSecondary,
     '--color-surface-primary': tokens.surface.Primary,
-    // Search button uses Checkout (accent) color for visual pop
     '--color-button-primary': tokens.button.Primary,
     '--color-button-hover-primary': tokens.buttonHover.Primary,
     '--color-text-button-primary': tokens.buttonText.Primary,
