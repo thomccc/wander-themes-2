@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wander Themes
 
-## Getting Started
+Color system engine and template builder for short-term rental direct booking sites, built on the Wander Design System.
 
-First, run the development server:
+## Setup
+
+This project uses the private `@wandercom/design-system-web` package from GitHub Packages. You need an `NPM_TOKEN` to install dependencies.
+
+1. Create a GitHub personal access token with `read:packages` scope
+2. Set it as an environment variable:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+export NPM_TOKEN=your_github_token_here
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Install and run:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000) to see the template builder.
 
-## Learn More
+## Pages
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/` — Template builder with 3 site templates, 5 color sub-themes, 12 color presets, and 10 font pairings
+- `/color` — Color system configurator with ramp visualization, token inspector, and Figma export
+- `/type` — Typography/font pairing picker
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Add `NPM_TOKEN` as an environment variable in your Vercel project settings (Settings > Environment Variables). Apply to Production, Preview, and Development.
