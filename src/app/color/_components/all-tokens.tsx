@@ -43,7 +43,7 @@ export function AllTokens({ ramps }: { ramps: Ramps }) {
               }}
             >
               {/* Preview */}
-              <div className="p-5" style={{ background: bg }}>
+              <div className="p-5 transition-[background-color] duration-250 ease-out" style={{ background: bg }}>
                 <div
                   className="mb-0.5 text-[9px] font-semibold uppercase tracking-widest"
                   style={{ color: t.text.Tertiary }}
@@ -70,14 +70,14 @@ export function AllTokens({ ramps }: { ramps: Ramps }) {
                   <span style={{ color: t.text.Muted }}>muted</span>
                 </div>
                 <div className="flex flex-wrap gap-1">
-                  {Object.entries(t.button)
+                  {Object.entries(t.button.bg)
                     .filter(([name]) => name !== 'Slider')
                     .map(([name, value]) => (
                       <ThemedButton
                         key={name}
                         bg={name === 'Outlined' || name === 'Ghost' ? 'transparent' : value}
-                        hover={t.buttonHover[name] || value}
-                        text={t.buttonText[name] || fg}
+                        hover={t.button.bgHover[name] || value}
+                        text={t.button.foreground[name] || fg}
                         borderColor={name === 'Outlined' ? t.border.Secondary : undefined}
                       >
                         {name}
@@ -97,8 +97,8 @@ export function AllTokens({ ramps }: { ramps: Ramps }) {
                 {[
                   { l: 'bg', c: bg },
                   { l: 'fg', c: fg },
-                  { l: 'brand', c: t.button.Primary },
-                  { l: 'accent', c: t.button.Checkout },
+                  { l: 'brand', c: t.button.bg.Primary },
+                  { l: 'accent', c: t.button.bg.Checkout },
                   { l: 'txt.2', c: t.text.Secondary },
                 ].map((x) => (
                   <div key={x.l} className="flex items-center gap-1">
@@ -109,7 +109,7 @@ export function AllTokens({ ramps }: { ramps: Ramps }) {
                         boxShadow: '0 0 0 0.5px rgba(128,128,128,0.2)',
                       }}
                     />
-                    <span className="font-mono text-[9px] opacity-30">
+                    <span className="font-mono text-[9px] tabular-nums opacity-30">
                       {x.l}
                     </span>
                   </div>

@@ -32,7 +32,7 @@ export function NavPreview({ nav, cornerRadius }: NavPreviewProps) {
         {['Features', 'Pricing', 'About'].map((link) => (
           <span
             key={link}
-            className="text-[11px] font-medium"
+            className="cursor-default text-[11px] font-medium transition-opacity duration-150 hover:opacity-70"
             style={{ color: nav.textSecondary }}
           >
             {link}
@@ -43,7 +43,7 @@ export function NavPreview({ nav, cornerRadius }: NavPreviewProps) {
       {/* Right side */}
       <div className="ml-auto flex items-center gap-2">
         <span
-          className="text-[11px] font-medium"
+          className="cursor-default text-[11px] font-medium transition-opacity duration-150 hover:opacity-70"
           style={{ color: nav.textSecondary }}
         >
           Login

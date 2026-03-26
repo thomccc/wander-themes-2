@@ -681,10 +681,10 @@ export function CTASection({ bg, tokens: t, headingFont, bodyFont, variant }: Se
             {c.description}
           </p>
           <div className="flex items-center justify-center gap-3">
-            <ThemedButton bg={t.button.Primary} hover={t.buttonHover.Primary} text={t.buttonText.Primary} size="lg">
+            <ThemedButton bg={t.button.bg.Primary} hover={t.button.bgHover.Primary} text={t.button.foreground.Primary} size="lg">
               {c.primaryCta}
             </ThemedButton>
-            <ThemedButton bg="transparent" hover={t.buttonHover.Ghost} text={t.buttonText.Ghost} borderColor={t.border.Tertiary} size="lg">
+            <ThemedButton bg="transparent" hover={t.button.bgHover.Ghost} text={t.button.foreground.Ghost} borderColor={t.border.Tertiary} size="lg">
               {c.secondaryCta}
             </ThemedButton>
           </div>
@@ -739,17 +739,17 @@ export function CTASection({ bg, tokens: t, headingFont, bodyFont, variant }: Se
       <GridItem span={{ base: 'full', lg: 4 }} start={{ lg: 9 }} className="flex items-center">
         <div className="flex items-center gap-3">
           <ThemedButton
-            bg={t.button.Primary}
-            hover={t.buttonHover.Primary}
-            text={t.buttonText.Primary}
+            bg={t.button.bg.Primary}
+            hover={t.button.bgHover.Primary}
+            text={t.button.foreground.Primary}
             size="lg"
           >
             {c.primaryCta}
           </ThemedButton>
           <ThemedButton
             bg="transparent"
-            hover={t.buttonHover.Ghost}
-            text={t.buttonText.Ghost}
+            hover={t.button.bgHover.Ghost}
+            text={t.button.foreground.Ghost}
             borderColor={t.border.Secondary}
             size="lg"
           >

@@ -8,7 +8,6 @@ import {
   hexToOklch,
   resolveRole,
   resolveSectionTokens,
-  STATUS_COLORS,
   ALL_ROLES,
   ROLE_GROUPS,
 } from '@/lib/color-engine';
@@ -40,11 +39,11 @@ function RolePicker({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
-          className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium backdrop-blur-sm transition-opacity hover:opacity-90"
+          className="flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-medium backdrop-blur-sm transition-[background-color,transform,box-shadow] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
           style={{
             background: bg,
             color: isLight ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.55)',
-            boxShadow: '0 0 0 1px rgba(128,128,128,0.15)',
+            boxShadow: '0 0 0 1px rgba(128,128,128,0.15), 0 1px 2px rgba(0,0,0,0.05)',
           }}
         >
           {role}
@@ -72,12 +71,12 @@ function RolePicker({
                         onChange(r.id);
                         setOpen(false);
                       }}
-                      className="relative flex h-7 w-10 items-center justify-center rounded-md transition-transform hover:scale-110"
+                      className="relative flex h-8 w-11 items-center justify-center rounded-lg transition-[transform,box-shadow] duration-150 ease-out hover:scale-105 active:scale-[0.97]"
                       style={{
                         background: c,
                         boxShadow: selected
-                          ? '0 0 0 2px #499BFF'
-                          : '0 0 0 1px rgba(128,128,128,0.1), 0 1px 2px rgba(0,0,0,0.05)',
+                          ? '0 0 0 2px #499BFF, 0 1px 3px rgba(73,155,255,0.25)'
+                          : '0 0 0 1px rgba(128,128,128,0.1), 0 1px 2px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.03)',
                       }}
                     >
                       {selected && (
@@ -152,7 +151,7 @@ export function SectionPreview({
       }}
     >
       {/* Preview area */}
-      <div className="relative p-5" style={{ background: bg }}>
+      <div className="relative p-5 transition-[background-color] duration-250 ease-out" style={{ background: bg }}>
         {section.img && (
           <div
             className="pointer-events-none absolute inset-0"
@@ -207,45 +206,45 @@ export function SectionPreview({
           {/* Buttons — real DS Buttons with hover states */}
           <div className="mb-3 flex flex-wrap gap-1.5">
             <ThemedButton
-              bg={t.button.Primary}
-              hover={t.buttonHover.Primary}
-              text={t.buttonText.Primary}
+              bg={t.button.bg.Primary}
+              hover={t.button.bgHover.Primary}
+              text={t.button.foreground.Primary}
             >
               Primary
             </ThemedButton>
             <ThemedButton
-              bg={t.button.Checkout}
-              hover={t.buttonHover.Checkout}
-              text={t.buttonText.Checkout}
+              bg={t.button.bg.Checkout}
+              hover={t.button.bgHover.Checkout}
+              text={t.button.foreground.Checkout}
             >
               Checkout
             </ThemedButton>
             <ThemedButton
-              bg={t.button.Secondary}
-              hover={t.buttonHover.Secondary}
-              text={t.buttonText.Secondary}
+              bg={t.button.bg.Secondary}
+              hover={t.button.bgHover.Secondary}
+              text={t.button.foreground.Secondary}
             >
               Secondary
             </ThemedButton>
             <ThemedButton
               bg="transparent"
-              hover={t.buttonHover.Outlined}
-              text={t.buttonText.Outlined}
+              hover={t.button.bgHover.Outlined}
+              text={t.button.foreground.Outlined}
               borderColor={t.border.Secondary}
             >
               Outlined
             </ThemedButton>
             <ThemedButton
               bg="transparent"
-              hover={t.buttonHover.Ghost}
-              text={t.buttonText.Ghost}
+              hover={t.button.bgHover.Ghost}
+              text={t.button.foreground.Ghost}
             >
               Ghost
             </ThemedButton>
             <ThemedButton
-              bg={t.button.Destructive}
-              hover={t.buttonHover.Destructive}
-              text={t.buttonText.Destructive}
+              bg={t.button.bg.Destructive}
+              hover={t.button.bgHover.Destructive}
+              text={t.button.foreground.Destructive}
             >
               Destruct
             </ThemedButton>
@@ -271,10 +270,10 @@ export function SectionPreview({
             ))}
             <div className="ml-1 flex gap-1">
               {[
-                STATUS_COLORS.error,
-                STATUS_COLORS.success,
-                STATUS_COLORS.warning,
-                STATUS_COLORS.info,
+                t.states.Error,
+                t.states.Success,
+                t.states.Warning,
+                t.states.Link,
               ].map((c, i) => (
                 <div
                   key={i}
@@ -308,8 +307,8 @@ export function SectionPreview({
           {[
             { l: 'bg', c: effectiveBg },
             { l: 'fg', c: fg },
-            { l: 'brand', c: t.button.Primary },
-            { l: 'accent', c: t.button.Checkout },
+            { l: 'brand', c: t.button.bg.Primary },
+            { l: 'accent', c: t.button.bg.Checkout },
           ].map((x) => (
             <div key={x.l} className="flex items-center gap-1">
               <div
@@ -319,7 +318,7 @@ export function SectionPreview({
                   boxShadow: '0 0 0 0.5px rgba(128,128,128,0.2)',
                 }}
               />
-              <span className="font-mono text-[9px] opacity-40">{x.l}</span>
+              <span className="font-mono text-[9px] tabular-nums opacity-40">{x.l}</span>
             </div>
           ))}
         </div>

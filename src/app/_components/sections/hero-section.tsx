@@ -57,9 +57,9 @@ function HeroSearchBar({ tokens }: { tokens: ResolvedTokens }) {
     '--color-primary': sbTextPrimary,
     '--color-secondary': sbTextSecondary,
     '--color-surface-primary': tokens.surface.Primary,
-    '--color-button-primary': tokens.button.Primary,
-    '--color-button-hover-primary': tokens.buttonHover.Primary,
-    '--color-text-button-primary': tokens.buttonText.Primary,
+    '--color-button-primary': tokens.button.bg.Primary,
+    '--color-button-hover-primary': tokens.button.bgHover.Primary,
+    '--color-text-button-primary': tokens.button.foreground.Primary,
   } as React.CSSProperties;
 
   return (

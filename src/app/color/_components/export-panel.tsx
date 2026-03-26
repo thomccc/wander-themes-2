@@ -102,10 +102,10 @@ export function ExportPanel({ ramps, colors }: ExportPanelProps) {
         variant="secondary"
         size="sm"
         onClick={() => setOpen(true)}
-        className="w-full justify-between"
+        className="w-full justify-between transition-[background-color,transform] duration-150 ease-out active:scale-[0.98]"
       >
         Export tokens for Figma / CSS
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="opacity-40">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="opacity-40 transition-transform duration-200">
           <path d="M3 5L6 8L9 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       </Button>
@@ -114,7 +114,7 @@ export function ExportPanel({ ramps, colors }: ExportPanelProps) {
 
   return (
     <div
-      className="overflow-hidden rounded-2xl"
+      className="animate-in fade-in slide-in-from-top-2 overflow-hidden rounded-2xl duration-250 ease-out"
       style={{
         boxShadow:
           '0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)',
@@ -238,8 +238,8 @@ export function ExportPanel({ ramps, colors }: ExportPanelProps) {
               `/* ${m.label} */\n` +
               `  surface.primary: ${t.surface.Primary}\n` +
               `  text.primary: ${t.text.Primary}\n` +
-              `  button.primary: ${t.button.Primary}\n` +
-              `  buttonText.primary: ${t.buttonText.Primary}\n\n`
+              `  button.bg.primary: ${t.button.bg.Primary}\n` +
+              `  button.foreground.primary: ${t.button.foreground.Primary}\n\n`
             );
           }).join('')}
         </pre>

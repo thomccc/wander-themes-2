@@ -49,9 +49,11 @@ export interface SectionConfig {
 export interface ResolvedTokens {
   surface: Record<string, string>;
   text: Record<string, string>;
-  button: Record<string, string>;
-  buttonHover: Record<string, string>;
-  buttonText: Record<string, string>;
+  button: {
+    foreground: Record<string, string>;
+    bg: Record<string, string>;
+    bgHover: Record<string, string>;
+  };
   border: Record<string, string>;
   states: Record<string, string>;
 }
@@ -298,12 +300,23 @@ export const GRAY: ColorRamp = {
   1000: '#000000',
 };
 
-export const STATUS_COLORS = {
-  error: '#fc624c',
-  success: '#22c55e',
-  warning: '#f97316',
-  info: '#3b82f6',
+// OG fixed colors — flip based on isLight like borders
+// Only used for states, destructive, and link — not seed-dependent
+export const OG_COLORS = {
+  light: {
+    error: '#C32727',      // Red.700
+    success: '#008C36',    // Green.500
+    warning: '#F97316',    // Orange.500
+    link: '#0073CB',       // Blue.500
+  },
+  dark: {
+    error: '#FC624C',      // Red.500
+    success: '#008C36',    // Green.500
+    warning: '#F97316',    // Orange.500
+    link: '#0073CB',       // Blue.500
+  },
 } as const;
+
 
 export const PRESETS: Record<string, SeedColors> = {
   'Claude.ai': { A: '#E07A5F', B: '#3D2117', C: '#D4A87C' },
@@ -484,6 +497,9 @@ export function resolveTokens(
   const overlay = `rgba(0,0,0,${overlayAlpha})`;
   const overlayEffective = alphaBlend('#000000', bg, overlayAlpha);
 
+  // OG fixed colors — flip based on isLight, with contrast safety
+  const ogColors = isLight ? OG_COLORS.light : OG_COLORS.dark;
+
   return {
     surface: {
       Primary: bg,
@@ -522,61 +538,64 @@ export function resolveTokens(
         4.5,
       ),
       Muted: ensureContrast(mixColors(fg, bg, 70), bg, 3.5),
-      Destructive: ensureContrast(STATUS_COLORS.error, bg, 4.5),
-      Link: ensureContrast(STATUS_COLORS.info, bg, 4.5),
+      // OG flip — fixed light/dark values with contrast safety
+      Destructive: ensureContrast(ogColors.error, bg, 4.5),
+      Link: ensureContrast(ogColors.link, bg, 4.5),
       Inverse: bg,
     },
     button: {
-      Primary: safeBrand,
-      Checkout: safeAccent,
-      Secondary: mixColors(bg, surfaceFg, isLight ? sp.t : 15.69),
-      Outlined: 'transparent',
-      Disabled: mixColors(bg, surfaceFg, 20),
-      Ghost: 'transparent',
-      Destructive: alphaBlend(STATUS_COLORS.error, bg, 0.16),
-      Slider: isLight ? bg : mixColors(bg, surfaceFg, sp.s),
-    },
-    buttonHover: {
-      Primary: mixColors(safeBrand, fg, 15),
-      Checkout: mixColors(safeAccent, fg, 12),
-      Secondary: mixColors(bg, surfaceFg, isLight ? sp.q : sp.q),
-      Outlined: mixColors(bg, surfaceFg, isLight ? sp.t : sp.t),
-      Disabled: mixColors(bg, surfaceFg, 20),
-      Ghost: mixColors(bg, surfaceFg, isLight ? sp.t : sp.t),
-      Destructive: alphaBlend(STATUS_COLORS.error, bg, 0.22),
-      Slider: mixColors(bg, surfaceFg, sp.s),
-    },
-    buttonText: {
-      Primary: autoTextColor(safeBrand),
-      Checkout: autoTextColor(safeAccent),
-      Secondary: ensureContrast(fg, mixColors(bg, surfaceFg, sp.t), 4.5),
-      Outlined: ensureContrast(fg, bg, 4.5),
-      Disabled: mixColors(bg, surfaceFg, 40),
-      Ghost: ensureContrast(fg, bg, 4.5),
-      Destructive: autoTextColor(alphaBlend(STATUS_COLORS.error, bg, 0.16)),
+      foreground: {
+        Primary: autoTextColor(safeBrand),
+        Checkout: autoTextColor(safeAccent),
+        Secondary: ensureContrast(fg, mixColors(bg, surfaceFg, sp.t), 4.5),
+        Outlined: ensureContrast(fg, bg, 4.5),
+        Disabled: mixColors(bg, surfaceFg, 40),
+        Ghost: ensureContrast(fg, bg, 4.5),
+        Destructive: autoTextColor(alphaBlend(ogColors.error, bg, 0.16)),
+      },
+      bg: {
+        Primary: safeBrand,
+        Checkout: safeAccent,
+        Secondary: mixColors(bg, surfaceFg, isLight ? sp.t : 15.69),
+        Outlined: 'transparent',
+        Disabled: mixColors(bg, surfaceFg, 20),
+        Ghost: 'transparent',
+        Destructive: alphaBlend(ogColors.error, bg, 0.16),
+        Slider: isLight ? bg : mixColors(bg, surfaceFg, sp.s),
+      },
+      bgHover: {
+        // Always shift away from the button's own lightness for a visible hover
+        Primary: hexToOklch(safeBrand).L > 0.6
+          ? mixColors(safeBrand, '#000000', 12)
+          : mixColors(safeBrand, '#ffffff', 18),
+        Checkout: hexToOklch(safeAccent).L > 0.6
+          ? mixColors(safeAccent, '#000000', 12)
+          : mixColors(safeAccent, '#ffffff', 18),
+        Secondary: mixColors(bg, surfaceFg, sp.q),
+        Outlined: mixColors(bg, surfaceFg, sp.t),
+        Disabled: mixColors(bg, surfaceFg, 20),
+        Ghost: mixColors(bg, surfaceFg, sp.t),
+        Destructive: alphaBlend(ogColors.error, bg, 0.22),
+        Slider: mixColors(bg, surfaceFg, sp.s),
+      },
     },
     border: {
-      // Borders use oklch alpha values matching DS exactly
+      // OG exact values — flip light/dark, not seed-dependent
       // Light: black at alpha, Dark: white at alpha
-      Primary: isLight ? 'oklch(0 0 0 / 0.051)' : 'oklch(1 0 0 / 0.102)',
-      Secondary: isLight ? 'oklch(0 0 0 / 0.078)' : 'oklch(1 0 0 / 0.141)',
-      Tertiary: isLight ? 'oklch(0 0 0 / 0.18)' : 'oklch(1 0 0 / 0.2)',
-      // Overlay: transparent on light (no extra definition needed),
-      // same as primary/secondary on dark (components need visible borders)
-      'Overlay-Primary': isLight ? 'oklch(0 0 0 / 0)' : 'oklch(1 0 0 / 0.102)',
-      'Overlay-Secondary': isLight ? 'oklch(0 0 0 / 0)' : 'oklch(1 0 0 / 0.141)',
+      Primary: isLight ? 'oklch(0 0 0 / 0.05)' : 'oklch(1 0 0 / 0.10)',
+      Secondary: isLight ? 'oklch(0 0 0 / 0.08)' : 'oklch(1 0 0 / 0.14)',
+      Tertiary: isLight ? 'oklch(0 0 0 / 0.18)' : 'oklch(1 0 0 / 0.20)',
+      'Overlay-Primary': isLight ? 'oklch(0 0 0 / 0)' : 'oklch(1 0 0 / 0.10)',
+      'Overlay-Secondary': isLight ? 'oklch(0 0 0 / 0)' : 'oklch(1 0 0 / 0.14)',
       Selected: fg,
-      Blue: STATUS_COLORS.info,
+      Blue: ogColors.link,
     },
     states: {
-      Error: STATUS_COLORS.error,
-      'Error-subtle': alphaBlend(STATUS_COLORS.error, bg, 0.1),
-      Success: STATUS_COLORS.success,
-      'Success-subtle': alphaBlend(STATUS_COLORS.success, bg, 0.1),
-      Warning: STATUS_COLORS.warning,
-      'Warning-subtle': alphaBlend(STATUS_COLORS.warning, bg, 0.1),
-      Info: STATUS_COLORS.info,
-      'Info-subtle': alphaBlend(STATUS_COLORS.info, bg, 0.1),
+      // OG flip — fixed light/dark values with contrast safety
+      Error: ensureContrast(ogColors.error, bg, 3),
+      Success: ensureContrast(ogColors.success, bg, 3),
+      Warning: ensureContrast(ogColors.warning, bg, 3),
+      Link: ensureContrast(ogColors.link, bg, 3),
     },
   };
 }
@@ -668,9 +687,9 @@ export function resolveNavTokens(
     border: isTransparent
       ? heroTokens.border.Primary
       : heroTokens.border.Secondary,
-    ctaBg: heroTokens.button.Primary,
-    ctaHover: heroTokens.buttonHover.Primary,
-    ctaText: heroTokens.buttonText.Primary,
+    ctaBg: heroTokens.button.bg.Primary,
+    ctaHover: heroTokens.button.bgHover.Primary,
+    ctaText: heroTokens.button.foreground.Primary,
     isTransparent,
   };
 }
@@ -703,9 +722,9 @@ export function generateExportJSON(
     const categories: [string, Record<string, string>][] = [
       ['Background.Surface', tokens.surface],
       ['Text', tokens.text],
-      ['Button', tokens.button],
-      ['Button.Hover', tokens.buttonHover],
-      ['ButtonText', tokens.buttonText],
+      ['Button.Foreground', tokens.button.foreground],
+      ['Button.Bg', tokens.button.bg],
+      ['Button.Bg-hover', tokens.button.bgHover],
       ['Border', tokens.border],
       ['States', tokens.states],
     ];
@@ -733,9 +752,9 @@ export function generateExportCSS(ramps: Ramps): string {
     const allTokens: Record<string, Record<string, string>> = {
       surface: tokens.surface,
       text: tokens.text,
-      button: tokens.button,
-      'button-hover': tokens.buttonHover,
-      'button-text': tokens.buttonText,
+      'button-foreground': tokens.button.foreground,
+      'button-bg': tokens.button.bg,
+      'button-bg-hover': tokens.button.bgHover,
       border: tokens.border,
       states: tokens.states,
     };
@@ -812,14 +831,6 @@ export function generateFigmaTokens(
     colorPrimitives.SeedC[stop] = figmaToken(hex);
   }
 
-  // Status colors
-  colorPrimitives.States = {
-    Error: figmaToken(STATUS_COLORS.error),
-    Success: figmaToken(STATUS_COLORS.success),
-    Warning: figmaToken(STATUS_COLORS.warning),
-    Link: figmaToken(STATUS_COLORS.info),
-  };
-
   // Build a mode object from resolved tokens
   function buildMode(tokens: ResolvedTokens) {
     return {
@@ -848,7 +859,7 @@ export function generateFigmaTokens(
         Selected: figmaToken(tokens.border.Selected),
         'Overlay-Primary': figmaToken(tokens.border['Overlay-Primary']),
         'Overlay-Secondary': figmaToken(tokens.border['Overlay-Secondary']),
-        Blue: figmaToken(tokens.border.Blue),
+        'Solid blue': figmaToken(tokens.border.Blue),
       },
       Text: {
         Primary: figmaToken(tokens.text.Primary),
@@ -859,44 +870,42 @@ export function generateFigmaTokens(
         Link: figmaToken(tokens.text.Link),
         Inverse: figmaToken(tokens.text.Inverse),
       },
-      'Button Text': {
-        Primary: figmaToken(tokens.buttonText.Primary),
-        Checkout: figmaToken(tokens.buttonText.Checkout),
-        Secondary: figmaToken(tokens.buttonText.Secondary),
-        Outlined: figmaToken(tokens.buttonText.Outlined),
-        Disabled: figmaToken(tokens.buttonText.Disabled),
-        Ghost: figmaToken(tokens.buttonText.Ghost),
-        Destructive: figmaToken(tokens.buttonText.Destructive),
-      },
       Button: {
-        Primary: figmaToken(tokens.button.Primary),
-        Checkout: figmaToken(tokens.button.Checkout),
-        Secondary: figmaToken(tokens.button.Secondary),
-        Outlined: figmaToken(tokens.button.Outlined),
-        Ghost: figmaToken(tokens.button.Ghost),
-        Disabled: figmaToken(tokens.button.Disabled),
-        Destructive: figmaToken(tokens.button.Destructive),
-        Slider: figmaToken(tokens.button.Slider),
-        Hover: {
-          Primary: figmaToken(tokens.buttonHover.Primary),
-          Checkout: figmaToken(tokens.buttonHover.Checkout),
-          Secondary: figmaToken(tokens.buttonHover.Secondary),
-          Outlined: figmaToken(tokens.buttonHover.Outlined),
-          Ghost: figmaToken(tokens.buttonHover.Ghost),
-          Disabled: figmaToken(tokens.buttonHover.Disabled),
-          Destructive: figmaToken(tokens.buttonHover.Destructive),
-          Slider: figmaToken(tokens.buttonHover.Slider),
+        Foreground: {
+          Primary: figmaToken(tokens.button.foreground.Primary),
+          Checkout: figmaToken(tokens.button.foreground.Checkout),
+          Secondary: figmaToken(tokens.button.foreground.Secondary),
+          Outlined: figmaToken(tokens.button.foreground.Outlined),
+          Disabled: figmaToken(tokens.button.foreground.Disabled),
+          Ghost: figmaToken(tokens.button.foreground.Ghost),
+          Destructive: figmaToken(tokens.button.foreground.Destructive),
+        },
+        Bg: {
+          Primary: figmaToken(tokens.button.bg.Primary),
+          Checkout: figmaToken(tokens.button.bg.Checkout),
+          Secondary: figmaToken(tokens.button.bg.Secondary),
+          Outlined: figmaToken(tokens.button.bg.Outlined),
+          Ghost: figmaToken(tokens.button.bg.Ghost),
+          Disabled: figmaToken(tokens.button.bg.Disabled),
+          Destructive: figmaToken(tokens.button.bg.Destructive),
+          Slider: figmaToken(tokens.button.bg.Slider),
+        },
+        'Bg-hover': {
+          Primary: figmaToken(tokens.button.bgHover.Primary),
+          Checkout: figmaToken(tokens.button.bgHover.Checkout),
+          Secondary: figmaToken(tokens.button.bgHover.Secondary),
+          Outlined: figmaToken(tokens.button.bgHover.Outlined),
+          Ghost: figmaToken(tokens.button.bgHover.Ghost),
+          Disabled: figmaToken(tokens.button.bgHover.Disabled),
+          Destructive: figmaToken(tokens.button.bgHover.Destructive),
+          Slider: figmaToken(tokens.button.bgHover.Slider),
         },
       },
       States: {
         Error: figmaToken(tokens.states.Error),
-        'Error-subtle': figmaToken(tokens.states['Error-subtle']),
         Success: figmaToken(tokens.states.Success),
-        'Success-subtle': figmaToken(tokens.states['Success-subtle']),
         Warning: figmaToken(tokens.states.Warning),
-        'Warning-subtle': figmaToken(tokens.states['Warning-subtle']),
-        Info: figmaToken(tokens.states.Info),
-        'Info-subtle': figmaToken(tokens.states['Info-subtle']),
+        Link: figmaToken(tokens.states.Link),
       },
       Color: colorPrimitives,
     };

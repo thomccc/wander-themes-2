@@ -41,7 +41,7 @@ export function SeedControls({
                 type="color"
                 value={colors[key]}
                 onChange={(e) => onColorChange(key, e.target.value)}
-                className="h-10 w-10 cursor-pointer rounded-lg border-0 p-0"
+                className="h-10 w-10 cursor-pointer rounded-lg border-0 p-0 transition-transform duration-150 ease-out hover:scale-110 active:scale-95"
               />
             </div>
             <div className="flex flex-col gap-0.5">
@@ -53,7 +53,7 @@ export function SeedControls({
                   const v = e.target.value;
                   if (/^#[0-9a-fA-F]{6}$/.test(v)) onColorChange(key, v);
                 }}
-                className="w-[88px] font-mono text-xs"
+                className="w-[88px] font-mono text-xs tabular-nums"
               />
               <Text variant="body-sm" color="tertiary" as="span">
                 {description}
@@ -63,17 +63,17 @@ export function SeedControls({
         ))}
 
         {/* Color preview circles */}
-        <div className="flex items-center rounded-full bg-black/5 p-1 dark:bg-white/5">
+        <div className="flex items-center rounded-full bg-black/5 p-1 transition-transform duration-200 ease-out hover:scale-110 dark:bg-white/5">
           <div
-            className="h-5 w-5 rounded-full border-2 border-white"
+            className="h-5 w-5 rounded-full border-2 border-white transition-[background-color] duration-200"
             style={{ background: colors.A }}
           />
           <div
-            className="-mx-0.5 z-10 h-7 w-7 rounded-full border-[2.5px] border-white"
+            className="-mx-0.5 z-10 h-7 w-7 rounded-full border-[2.5px] border-white transition-[background-color] duration-200"
             style={{ background: colors.B }}
           />
           <div
-            className="h-5 w-5 rounded-full border-2 border-white"
+            className="h-5 w-5 rounded-full border-2 border-white transition-[background-color] duration-200"
             style={{ background: colors.C }}
           />
         </div>

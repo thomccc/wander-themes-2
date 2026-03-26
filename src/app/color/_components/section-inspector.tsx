@@ -6,7 +6,6 @@ import {
   type BackgroundRole,
   hexToOklch,
   contrastRatio,
-  resolveRole,
   resolveRoleTokens,
   GRAY,
 } from '@/lib/color-engine';
@@ -64,13 +63,13 @@ function BgGrid({
               <button
                 key={item.id}
                 onClick={() => onSelect(item.id)}
-                className="flex h-8 flex-1 items-center justify-center rounded-lg text-[8px] font-medium transition-all hover:scale-[1.04]"
+                className="flex h-9 flex-1 items-center justify-center rounded-lg text-[9px] font-medium transition-[transform,box-shadow] duration-150 ease-out hover:scale-[1.03] active:scale-[0.97]"
                 style={{
                   background: item.c,
-                  color: isLight ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.4)',
+                  color: isLight ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.45)',
                   boxShadow: isSel
-                    ? '0 0 0 2px #499BFF, 0 1px 3px rgba(0,0,0,0.1)'
-                    : '0 0 0 1px rgba(128,128,128,0.08), 0 1px 2px rgba(0,0,0,0.04)',
+                    ? '0 0 0 2px #499BFF, 0 2px 6px rgba(73,155,255,0.2)'
+                    : '0 0 0 1px rgba(128,128,128,0.08), 0 1px 2px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02)',
                 }}
               >
                 {item.l}
@@ -111,7 +110,7 @@ function TokenRow({
         />
       )}
       <span className="flex-1 text-[10px] opacity-70">{name}</span>
-      <span className="min-w-14 font-mono text-[9px] opacity-30">
+      <span className="min-w-14 font-mono text-[9px] tabular-nums opacity-30">
         {color === 'transparent' ? 'transp' : color}
       </span>
       {ratio !== null && (
@@ -159,7 +158,7 @@ export function SectionInspector({ ramps }: { ramps: Ramps }) {
           {/* Header */}
           <div className="mb-3 flex items-center gap-2">
             <Badge variant="neutral">{inspectRole}</Badge>
-            <span className="font-mono text-xs opacity-30">{inspectBg}</span>
+            <span className="font-mono text-xs tabular-nums opacity-30">{inspectBg}</span>
             <Badge variant={ratio >= 4.5 ? 'success' : 'destructive'} className="ml-auto">
               {ratio.toFixed(1)}:1 {ratio >= 4.5 ? 'AA' : 'Fail'}
             </Badge>
@@ -167,11 +166,11 @@ export function SectionInspector({ ramps }: { ramps: Ramps }) {
 
           {/* Live preview card */}
           <div
-            className="mb-4 overflow-hidden rounded-2xl p-5"
+            className="mb-4 overflow-hidden rounded-2xl p-5 transition-[background-color] duration-250 ease-out"
             style={{
               background: inspectBg,
               boxShadow:
-                '0 0 0 1px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.06)',
+                '0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.06)',
             }}
           >
             <div
@@ -207,12 +206,12 @@ export function SectionInspector({ ramps }: { ramps: Ramps }) {
 
             {/* Real DS Buttons with hover */}
             <div className="mb-3 flex flex-wrap gap-1">
-              {Object.entries(iTokens.button).map(([name, value]) => (
+              {Object.entries(iTokens.button.bg).map(([name, value]) => (
                 <ThemedButton
                   key={name}
                   bg={name === 'Outlined' || name === 'Ghost' ? 'transparent' : value}
-                  hover={iTokens.buttonHover[name] || value}
-                  text={iTokens.buttonText[name] || iFg}
+                  hover={iTokens.button.bgHover[name] || value}
+                  text={iTokens.button.foreground[name] || iFg}
                   borderColor={name === 'Outlined' ? iTokens.border.Secondary : undefined}
                 >
                   {name}
@@ -292,9 +291,9 @@ export function SectionInspector({ ramps }: { ramps: Ramps }) {
             </div>
             <div className="min-w-36 flex-1">
               {[
-                { title: 'Button bg', data: iTokens.button },
-                { title: 'Button text', data: iTokens.buttonText },
-                { title: 'Button hover', data: iTokens.buttonHover },
+                { title: 'Button foreground', data: iTokens.button.foreground },
+                { title: 'Button bg', data: iTokens.button.bg },
+                { title: 'Button bg-hover', data: iTokens.button.bgHover },
                 { title: 'Border', data: iTokens.border },
                 { title: 'States', data: iTokens.states },
               ].map((group) => (

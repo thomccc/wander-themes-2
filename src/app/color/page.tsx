@@ -97,10 +97,10 @@ export default function ColorPage() {
       <div className="mx-auto max-w-3xl px-5 py-12">
         {/* Header */}
         <header className="mb-10">
-          <Heading variant="display-sm" className="mb-1">
+          <Heading variant="display-sm" className="mb-1 text-wrap-balance">
             Color System
           </Heading>
-          <Text variant="body-lg" color="tertiary">
+          <Text variant="body-lg" color="tertiary" className="text-pretty">
             3 seeds. ~55 tokens. Every combination accessible.
           </Text>
         </header>
@@ -167,7 +167,7 @@ export default function ColorPage() {
               onChange={(e) => setCornerRadius(Number(e.target.value))}
               className="w-20 accent-neutral-400"
             />
-            <span className="font-mono text-[11px] opacity-30">
+            <span className="font-mono text-[11px] tabular-nums opacity-30">
               {cornerRadius}
             </span>
           </div>
