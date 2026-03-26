@@ -30,14 +30,11 @@ export type BackgroundRole =
   | 'white'
   | 'black'
   | 'theme-light'
-  | 'theme-tint'
   | 'theme-solid'
   | 'theme-dark'
   | 'acc1-light'
-  | 'acc1-tint'
   | 'acc1-solid'
   | 'acc2-light'
-  | 'acc2-tint'
   | 'acc2-solid'
   | 'acc2-dark';
 
@@ -337,14 +334,11 @@ export const ALL_ROLES: RoleInfo[] = [
   { id: 'white', label: 'White', group: 'Neutral' },
   { id: 'black', label: 'Black', group: 'Neutral' },
   { id: 'theme-light', label: 'Thm lt', group: 'Theme' },
-  { id: 'theme-tint', label: 'Thm tnt', group: 'Theme' },
   { id: 'theme-solid', label: 'Thm', group: 'Theme' },
   { id: 'theme-dark', label: 'Thm dk', group: 'Theme' },
   { id: 'acc1-light', label: 'A1 lt', group: 'Accent 1' },
-  { id: 'acc1-tint', label: 'A1 tnt', group: 'Accent 1' },
   { id: 'acc1-solid', label: 'A1', group: 'Accent 1' },
   { id: 'acc2-light', label: 'A2 lt', group: 'Accent 2' },
-  { id: 'acc2-tint', label: 'A2 tnt', group: 'Accent 2' },
   { id: 'acc2-solid', label: 'A2', group: 'Accent 2' },
   { id: 'acc2-dark', label: 'A2 dk', group: 'Accent 2' },
 ];
@@ -414,14 +408,11 @@ export const LAYOUT_TEMPLATES: Record<string, SectionConfig[]> = {
 export const EXPORT_MODES: { id: BackgroundRole; label: string }[] = [
   { id: 'white', label: 'White' },
   { id: 'theme-light', label: 'Theme Light' },
-  { id: 'theme-tint', label: 'Theme Tint' },
   { id: 'theme-solid', label: 'Theme Solid' },
   { id: 'theme-dark', label: 'Theme Dark' },
   { id: 'acc1-light', label: 'Accent1 Light' },
-  { id: 'acc1-tint', label: 'Accent1 Tint' },
   { id: 'acc1-solid', label: 'Accent1 Solid' },
   { id: 'acc2-light', label: 'Accent2 Light' },
-  { id: 'acc2-tint', label: 'Accent2 Tint' },
   { id: 'acc2-solid', label: 'Accent2 Solid' },
   { id: 'acc2-dark', label: 'Accent2 Dark' },
   { id: 'black', label: 'Black' },
@@ -436,14 +427,11 @@ const ROLE_MAP: Record<
   white: { collection: 'gray', stop: 0 },
   black: { collection: 'gray', stop: 1000 },
   'theme-light': { collection: 'brand', stop: 50 },
-  'theme-tint': { collection: 'brand', stop: 100 },
   'theme-solid': { collection: 'brand', stop: 500 },
   'theme-dark': { collection: 'brand', stop: 800 },
   'acc1-light': { collection: 'acc1', stop: 50 },
-  'acc1-tint': { collection: 'acc1', stop: 100 },
   'acc1-solid': { collection: 'acc1', stop: 500 },
   'acc2-light': { collection: 'acc2', stop: 50 },
-  'acc2-tint': { collection: 'acc2', stop: 100 },
   'acc2-solid': { collection: 'acc2', stop: 500 },
   'acc2-dark': { collection: 'acc2', stop: 800 },
 };
@@ -788,14 +776,11 @@ const FIGMA_MODES: { role: BackgroundRole; label: string }[] = [
   { role: 'white', label: 'White' },
   { role: 'black', label: 'Black' },
   { role: 'theme-light', label: 'Theme Light' },
-  { role: 'theme-tint', label: 'Theme Tint' },
   { role: 'theme-solid', label: 'Theme Solid' },
   { role: 'theme-dark', label: 'Theme Dark' },
   { role: 'acc1-light', label: 'Accent1 Light' },
-  { role: 'acc1-tint', label: 'Accent1 Tint' },
   { role: 'acc1-solid', label: 'Accent1 Solid' },
   { role: 'acc2-light', label: 'Accent2 Light' },
-  { role: 'acc2-tint', label: 'Accent2 Tint' },
   { role: 'acc2-solid', label: 'Accent2 Solid' },
   { role: 'acc2-dark', label: 'Accent2 Dark' },
 ];

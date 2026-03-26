@@ -32,18 +32,15 @@ function BgGrid({
     ],
     [
       { id: 'theme-light', c: ramps.brand[50], l: 'Thm lt' },
-      { id: 'theme-tint', c: ramps.brand[100], l: 'Tint' },
       { id: 'theme-solid', c: ramps.brand[500], l: 'Thm' },
       { id: 'theme-dark', c: ramps.brand[800], l: 'Thm dk' },
     ],
     [
       { id: 'acc1-light', c: ramps.acc1[50], l: 'A1 lt' },
-      { id: 'acc1-tint', c: ramps.acc1[100], l: 'A1 tnt' },
       { id: 'acc1-solid', c: ramps.acc1[500], l: 'A1' },
     ],
     [
       { id: 'acc2-light', c: ramps.acc2[50], l: 'A2 lt' },
-      { id: 'acc2-tint', c: ramps.acc2[100], l: 'A2 tnt' },
       { id: 'acc2-solid', c: ramps.acc2[500], l: 'A2' },
       { id: 'acc2-dark', c: ramps.acc2[800], l: 'A2 dk' },
     ],
